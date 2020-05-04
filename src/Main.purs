@@ -1,9 +1,11 @@
 module Main where
 
 import Prelude
-
 import Effect (Effect)
 import Effect.Console (log)
+import Data.Array (null)
+import Data.Array.Partial (tail)
+import Partial.Unsafe (unsafePartial)
 
 -- (λx.(λy.x + y))
 addMe :: Int -> Int -> Int
@@ -14,31 +16,81 @@ addThree :: Int -> Int
 addThree = addMe 3
 
 -- Basic Data Constructor
-data Foo = Foo | Bar String
+data Foo
+  = Foo
+  | Bar String
+
 runFoo :: Foo -> String
 runFoo Foo = "Damn, right its FoO"
+
 runFoo (Bar s) = "Yeah it's Bar and " <> s
 
 -- Pattern Matching
-nonSense :: Int -> Int -> Int 
+nonSense :: Int -> Int -> Int
 nonSense n 0 = 0
+
 -- K = λx.λy.y
 nonSense n _ = n
 
 whoIsGreater :: Int -> Int -> Int
-whoIsGreater x y | x > y = x
-                 | otherwise = y
+whoIsGreater x y
+  | x > y = x
+  | otherwise = y
 
 isEmpty :: forall a. Array a -> Boolean
 isEmpty [] = true
+
 isEmpty _ = false
 
 -- Type Alias 
-type PersonRec = 
-  { name :: String
-  , age  :: Int
-  }
+type PersonRec
+  = { name :: String
+    , age :: Int
+    }
 
+-- Simple Recursion
+fact :: Int -> Int
+fact 0 = 1
+
+fact n = n * fact (n - 1)
+
+length :: forall a. Array a -> Int
+length [] = 0
+
+length arr = 1 + length (unsafePartial tail arr)
+
+-- Algebraic Data Types
+data Vehicle
+  = Car Wheels
+  | MotorCycle Wheels
+  | SkateBoard Wheels
+  | Bicycle Wheels
+
+data Wheels
+  = Wheels Int
+
+instance showWheels' :: Show Wheels where
+  show = showWheels
+
+instance showVehicle' :: Show Vehicle where
+  show = showVehicle
+
+myVehicle :: Vehicle
+myVehicle = SkateBoard (Wheels 89)
+
+-- Show Instance for Data Constructor `Wheels`
+showWheels :: Wheels -> String
+showWheels (Wheels a) = "Wheels: " <> show a
+
+--Show Instance for Data Constructor `Vehicle`
+showVehicle :: Vehicle -> String
+showVehicle (Car a) = "Vehicle, Car: " <> show a
+
+showVehicle (MotorCycle a) = "Vehicle, MotorCycle: " <> show a
+
+showVehicle (SkateBoard a) = "Vehicle, SkateBoard: " <> show a
+
+showVehicle (Bicycle a) = "Vehicle, Bicycle: " <> show a
 
 main :: Effect Unit
 main = do
