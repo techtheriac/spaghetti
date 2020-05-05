@@ -3,9 +3,9 @@ module Main where
 import Prelude
 import Effect (Effect)
 import Effect.Console (log)
-import Data.Array (null)
 import Data.Array.Partial (tail)
 import Partial.Unsafe (unsafePartial)
+import Data.List (List(..))
 
 -- (λx.(λy.x + y))
 addMe :: Int -> Int -> Int
@@ -76,7 +76,7 @@ instance showVehicle' :: Show Vehicle where
   show = showVehicle
 
 myVehicle :: Vehicle
-myVehicle = SkateBoard (Wheels 89)
+myVehicle = Bicycle (Wheels 2)
 
 -- Show Instance for Data Constructor `Wheels`
 showWheels :: Wheels -> String
@@ -91,6 +91,10 @@ showVehicle (MotorCycle a) = "Vehicle, MotorCycle: " <> show a
 showVehicle (SkateBoard a) = "Vehicle, SkateBoard: " <> show a
 
 showVehicle (Bicycle a) = "Vehicle, Bicycle: " <> show a
+
+-- Lists
+myList :: List Int
+myList = (Cons 1 (Cons 2 (Cons 3 Nil)))
 
 main :: Effect Unit
 main = do

@@ -3,7 +3,8 @@ Welcome to a Spago project!
 You can edit this file as you like.
 -}
 { name = "my-project"
-, dependencies = [ "arrays", "console", "effect", "partial", "psci-support" ]
+, dependencies =
+  [ "arrays", "console", "effect", "lists", "partial", "psci-support", "foldable-traversable", "maybe", "strings" ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
 }
