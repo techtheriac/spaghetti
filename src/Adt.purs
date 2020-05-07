@@ -1,6 +1,10 @@
 module Adt where
 
 import Prelude
+import Data.Array (tail)
+import Data.Foldable (sum)
+import Data.Maybe (fromMaybe)
+import Partial.Unsafe (unsafePartial)
 
 --import Data.Semigroup.Foldable (foldl)
 -- import Data.Foldable (foldl)
@@ -91,10 +95,22 @@ livesInLa { address: { city: "Los Angeles" } } = true
 livesInLa _ = false
 
 -- Exercise : Write a funtion that uses record patterns to test if two persons belong
---            To the same city
+--            To the same city  
 sameCity :: Person -> Person -> Boolean
 sameCity { address: { city: y } } { address: { city: x } } =
   if y == x then
     true
   else
     false
+
+-- fromSingleton :: forall a . a -> Array a -> a
+-- Computes the longest suffix which sums to zero
+lzs :: Array Int -> Array Int
+lzs [] = []
+
+lzs xs = case sum xs of
+  0 -> xs -- Return 0 if tail sums to 0
+  _ -> lzs (fromMaybe [] $ tail xs) -- Otherwise return the tail of the array
+
+partialFunction :: Boolean -> Boolean
+partialFunction = unsafePartial \true -> true
