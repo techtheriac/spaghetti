@@ -114,3 +114,77 @@ lzs xs = case sum xs of
 
 partialFunction :: Boolean -> Boolean
 partialFunction = unsafePartial \true -> true
+
+-- `unsafePartial` used to silence errors caused by partial functions
+-- ALGEBRAIC DATA TYPES (ADTs)
+-- Modelling shapes using ADTs
+data Shape
+  = Circle Point Number
+  | Rectangle Point Number Number
+  | Line Point Point
+  | Text Point String
+
+data Point
+  = Point
+    { x :: Number
+    , y :: Number
+    }
+
+-- Constructing a paricular Line (type `Shape`) using the Line constructor.
+-- Algebraic Data Types can be used in constructing Algebraic Data Types.
+-- Just like Point is used in cnstructing values for Circle, Rec... in the sum type `Shape`
+exampleLine :: Shape
+exampleLine = Line p1 p2
+  where
+  p1 :: Point
+  p1 = Point { x: 0.0, y: 0.0 }
+
+  p2 :: Point
+  p2 = Point { x: 100.0, y: 50.0 }
+
+-- Consuming ADTs 
+-- Converting Shape into a String
+-- Employing Pattern Matching
+simplePoint :: Point
+simplePoint = Point { x: 9.0, y: 7.0 }
+
+showPoint :: Point -> String
+showPoint (Point { x: x, y: y }) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y
+
+showShape :: Shape -> String
+showShape (Circle (Point { x: x, y: y }) r) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> " " <> "radius: " <> show r
+
+showShape (Rectangle (Point { x: x, y: y }) w h) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> " " <> "width: " <> show w <> " " <> "height: " <> show h
+
+showShape (Line (Point { x: x1, y: y1 }) (Point { x: x2, y: y2 })) = "x1: " <> show x1 <> " " <> "y1: " <> show y1 <> " " <> "x2: " <> show x2 <> " " <> "y2: " <> show y2
+
+showShape (Text (Point { x: x, y: y }) text) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> "text: " <> show text
+
+--Create Circle
+smallCircle :: Shape
+smallCircle = Circle c r
+  where
+  c :: Point
+  c = Point { x: 6.0, y: 0.0 }
+
+  r :: Number
+  r = 9.0
+
+-- (Easy) Construct a value of type Shape which represents a circle centered at the origin with radius 10.0.
+origin :: Point
+origin = Point { x, y }
+  where
+  x = 0.0
+
+  y = 0.0
+
+bigCircle :: Shape
+bigCircle = Circle c r
+  where
+  c :: Point
+  c = origin
+
+  r :: Number
+  r = 10.0
+
+--📌(Medium) Write a function from Shapes to Shapes, which scales its argument by a factor of 2.0, center the origin.
