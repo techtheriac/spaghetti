@@ -98,4 +98,4 @@ myList = (Cons 1 (Cons 2 (Cons 3 Nil)))
 
 main :: Effect Unit
 main = do
-  log "🍝"
+  log "You're such a fucking hoe"

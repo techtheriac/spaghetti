@@ -6,7 +6,7 @@ import Data.Foldable (sum)
 import Data.Maybe (fromMaybe)
 import Partial.Unsafe (unsafePartial)
 
---import Data.Semigroup.Foldable (foldl)
+-- import Data.Semigroup.Foldable (foldl)
 -- import Data.Foldable (foldl)
 -- import Global as Global
 -- import Math as Math
@@ -148,17 +148,18 @@ exampleLine = Line p1 p2
 simplePoint :: Point
 simplePoint = Point { x: 9.0, y: 7.0 }
 
+-- Exercise : Use ShowShape Function to define a Show instance for type `Shape`
 showPoint :: Point -> String
 showPoint (Point { x: x, y: y }) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y
 
-showShape :: Shape -> String
-showShape (Circle (Point { x: x, y: y }) r) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> " " <> "radius: " <> show r
+class Show a where
+  showShape :: a -> String
 
-showShape (Rectangle (Point { x: x, y: y }) w h) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> " " <> "width: " <> show w <> " " <> "height: " <> show h
-
-showShape (Line (Point { x: x1, y: y1 }) (Point { x: x2, y: y2 })) = "x1: " <> show x1 <> " " <> "y1: " <> show y1 <> " " <> "x2: " <> show x2 <> " " <> "y2: " <> show y2
-
-showShape (Text (Point { x: x, y: y }) text) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> "text: " <> show text
+instance showShape' :: Show Shape where
+  showShape (Circle (Point { x: x, y: y }) r) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> " " <> "radius: " <> show r
+  showShape (Rectangle (Point { x: x, y: y }) w h) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> " " <> "width: " <> show w <> " " <> "height: " <> show h
+  showShape (Line (Point { x: x1, y: y1 }) (Point { x: x2, y: y2 })) = "x1: " <> show x1 <> " " <> "y1: " <> show y1 <> " " <> "x2: " <> show x2 <> " " <> "y2: " <> show y2
+  showShape (Text (Point { x: x, y: y }) text) = "Coordinates - " <> "x: " <> show x <> " " <> "y: " <> show y <> "text: " <> show text
 
 --Create Circle
 smallCircle :: Shape
@@ -187,4 +188,21 @@ bigCircle = Circle c r
   r :: Number
   r = 10.0
 
---📌(Medium) Write a function from Shapes to Shapes, which scales its argument by a factor of 2.0, center the origin.
+--📌(Medium) Write a function from Shape to Shape, which scales its argument by a factor of 2.0, center the origin.
+-- NewTypes : A newtype define exactly one constructor
+newtype Pixels
+  = Pixels Number
+
+newtype Inches
+  = Inches Number
+
+-- Defining a type synonym for an Array Of Shapes called Picture
+type Picture
+  = Array Shape
+
+-- Turning `Picture` into readable String
+showPicture :: Picture -> Array String
+showPicture = map showShape
+
+pictures :: Picture
+pictures = [ bigCircle, exampleLine ]

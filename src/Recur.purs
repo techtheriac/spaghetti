@@ -56,7 +56,7 @@ pairs n = concatMap (\i -> 1 .. n) (1 .. n)
 :type foldr 
   forall a b f. Foldable f => (a -> b ->  b) -> a -> fa -> b
   f - has a type class constraint of Foldable
-  foldr is a higher order function that takes a function (a -> b -> b)
+  foldr is a higher order function that takes a function of type (a -> b -> b)
     function (a -> b -> b) is a function that takes a value of type a (an accumulator),
     Takes another value of type b (next) and returns a value of type b 
   Having taken the function to Operate on the Functor,
